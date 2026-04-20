@@ -150,16 +150,37 @@ button {
     <input type="checkbox" value="20000" data-nombre="Diseño web" hidden>
 </div>
 
-<!-- SERVICIO 2 -->
+<!-- SERVICIO: MANTENIMIENTO AIRE ACONDICIONADO -->
 <div class="servicio">
-    <span>Tienda online - $150.000</span>
+    <span>Mantenimiento en aires acondicionado</span>
 
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
-    <div class="descripcion">Tiendas con carrito profesional.</div>
+    <div class="descripcion">
 
-    <input type="checkbox" value="150000" data-nombre="Tienda online" hidden>
+        <p>
+            <b>Opción 1 - Mantenimiento preventivo:</b><br>
+            Deja tu aire como nuevo. Eliminamos polvo, moho y malos olores, verificamos gas y amperaje.<br>
+            <b>$80.000</b>
+        </p>
+
+        <p>
+            <b>Opción 2 - Mantenimiento profundo:</b><br>
+            Limpieza profunda de filtros, serpentines y turbina, revisión de gas refrigerante, drenaje y conexiones eléctricas. Mejora el rendimiento, reduce consumo y alarga la vida útil del equipo.<br>
+            <b>$120.000</b><br>
+            <i>Recomendado cada 4 o 6 meses.</i>
+        </p>
+
+    </div>
+
+    <!-- 🔥 OPCIONES DEL SERVICIO -->
+    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
+        <option value="80000">Opción 1 - Mantenimiento preventivo</option>
+        <option value="120000">Opción 2 - Mantenimiento profundo (Recomendado)</option>
+    </select>
+
+    <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
 </div>
 
 <!-- SERVICIO 3 -->
@@ -231,8 +252,16 @@ function generarFactura() {
         if (c.checked) {
             hayServicios = true;
 
-            let nombre = c.dataset.nombre;
-            let precio = parseInt(c.value);
+            let servicio = c.parentElement;
+let select = servicio.querySelector(".opciones");
+
+let nombre = c.dataset.nombre;
+let precio = parseInt(c.value);
+
+if (select) {
+    nombre = select.dataset.nombre;
+    precio = parseInt(select.value);
+}
 
             total += precio;
 
