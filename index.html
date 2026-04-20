@@ -188,19 +188,38 @@ button {
     <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
 </div>
 
-<!-- SERVICIO 3 -->
+
 <div class="servicio">
-    <span>Mantenimiento - $50.000</span>
+    <span> Instalaciones Electricas </span>
 
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
-    <div class="descripcion">Soporte y mejoras constantes.</div>
+    <div class="descripcion">
 
-    <input type="checkbox" value="50000" data-nombre="Mantenimiento" hidden>
+        <p>
+            <b>Opción 1 - Instalaciones Electricas:</b><br>
+            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 110V.<br>
+            <b>$20.000</b>
+        </p>
+
+        <p>
+            <b>Opción 2 - Instalaciones Electricas:</b><br>
+             Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 220V.<br>
+            <b>$35.000</b><br>
+            <i>Recomendado cada 4 o 6 meses.</i>
+        </p>
+
+    </div>
+
+    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
+        <option value="80000">Opción 1 - Preventivo</option>
+        <option value="120000">Opción 2 - Profundo</option>
+    </select>
+
+    <input type="checkbox" data-nombre="Instalaciones Electricas" hidden>
 </div>
-
-<button onclick="generarFactura()">Generar factura</button>
+    
 
 <!-- FACTURA -->
 <div id="factura">
