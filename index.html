@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Servicios FB </title>
+<title>Servicios FB</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -63,6 +63,7 @@ input[type="text"]{
     font-size: 13px;
 }
 
+/* 🔥 MEJORADO PARA SCROLL */
 .descripcion {
     max-height: 0;
     overflow: hidden;
@@ -73,9 +74,16 @@ input[type="text"]{
 }
 
 .descripcion.activa {
-    max-height: 100px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
+.descripcion p {
+    margin: 10px 0;
+}
+
+/* BOTÓN GENERAL */
 button {
     width: 100%;
     padding: 12px;
@@ -86,7 +94,7 @@ button {
     margin-top: 10px;
 }
 
-/* FACTURA (NO TOCADA) */
+/* FACTURA */
 #factura {
     display: none;
     background: white;
@@ -119,9 +127,6 @@ button {
     font-weight: bold;
     margin-top: 10px;
 }
-#factura {
-    display: block !important;
-}
 </style>
 
 </head>
@@ -134,7 +139,6 @@ button {
 
 <div class="container">
 
-<!-- CLIENTE -->
 <input type="text" id="nombreCliente" placeholder="Nombre del cliente">
 <input type="text" id="cedulaCliente" placeholder="Cédula">
 
@@ -145,12 +149,14 @@ button {
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
-    <div class="descripcion"> Servicio en sitio para identificar la falla eléctrica, realizar mediciones básicas y entregar diagnóstico inicial con cotización del arreglo. Tiene costo independiente.</div>
+    <div class="descripcion">
+        Servicio en sitio para identificar la falla eléctrica, realizar mediciones básicas y entregar diagnóstico inicial con cotización del arreglo. Tiene costo independiente.
+    </div>
 
-    <input type="checkbox" value="20000" data-nombre="Diseño web" hidden>
+    <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
 </div>
 
-<!-- SERVICIO: MANTENIMIENTO AIRE ACONDICIONADO -->
+<!-- SERVICIO AIRE ACONDICIONADO -->
 <div class="servicio">
     <span>Mantenimiento en aires acondicionado</span>
 
@@ -174,10 +180,9 @@ button {
 
     </div>
 
-    <!-- 🔥 OPCIONES DEL SERVICIO -->
     <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1 - Mantenimiento preventivo</option>
-        <option value="120000">Opción 2 - Mantenimiento profundo (Recomendado)</option>
+        <option value="80000">Opción 1 - Preventivo</option>
+        <option value="120000">Opción 2 - Profundo</option>
     </select>
 
     <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
@@ -246,22 +251,19 @@ function generarFactura() {
 
     lista.innerHTML = "";
 
-    let hayServicios = false;
-
     checks.forEach(c => {
         if (c.checked) {
-            hayServicios = true;
 
             let servicio = c.parentElement;
-let select = servicio.querySelector(".opciones");
+            let select = servicio.querySelector(".opciones");
 
-let nombre = c.dataset.nombre;
-let precio = parseInt(c.value);
+            let nombre = c.dataset.nombre;
+            let precio = parseInt(c.value);
 
-if (select) {
-    nombre = select.dataset.nombre;
-    precio = parseInt(select.value);
-}
+            if (select) {
+                nombre = select.dataset.nombre;
+                precio = parseInt(select.value);
+            }
 
             total += precio;
 
@@ -270,11 +272,6 @@ if (select) {
             lista.appendChild(li);
         }
     });
-
-    if (!hayServicios) {
-        alert("Agrega al menos un servicio");
-        return;
-    }
 
     document.getElementById("clienteNombre").innerText = nombreCliente;
     document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
@@ -290,22 +287,14 @@ function descargarPDF() {
         margin: 0.3,
         filename: "factura.pdf",
         image: { type: 'jpeg', quality: 1 },
-        html2canvas: { 
-            scale: 3,
-            useCORS: true,
-            scrollY: 0
-        },
+        html2canvas: { scale: 3, useCORS: true, scrollY: 0 },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
     };
 
-    // 👇 Esto arregla el problema en celular
     html2pdf().set(opciones).from(factura).outputPdf('blob').then(function (pdf) {
         let url = URL.createObjectURL(pdf);
-
-        // 📱 En celular abre el PDF para descargarlo
         window.open(url, '_blank');
 
-        // 💻 En PC intenta descargar
         let a = document.createElement("a");
         a.href = url;
         a.download = "factura.pdf";
