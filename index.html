@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Servicios</title>
 
-<!-- LIBRERÍA PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
@@ -28,14 +27,53 @@ header {
     margin: auto;
 }
 
+input[type="text"]{
+    width:100%;
+    padding:10px;
+    margin:5px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
 .servicio {
     background: white;
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+}
+
+/* BOTÓN AGREGAR */
+.btn-agregar {
+    width: 100%;
+    padding: 10px;
+    background: #ece2c8;
+    border: none;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+/* BOTÓN VER MÁS */
+.btn-ver {
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 13px;
+}
+
+.descripcion {
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s;
+    font-size: 13px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.descripcion.activa {
+    max-height: 100px;
 }
 
 button {
@@ -48,7 +86,7 @@ button {
     margin-top: 10px;
 }
 
-/* FACTURA */
+/* FACTURA (NO TOCADA) */
 #factura {
     display: none;
     background: white;
@@ -81,6 +119,9 @@ button {
     font-weight: bold;
     margin-top: 10px;
 }
+#factura {
+    display: block !important;
+}
 </style>
 
 </head>
@@ -93,20 +134,44 @@ button {
 
 <div class="container">
 
-<!-- SERVICIOS -->
+<!-- CLIENTE -->
+<input type="text" id="nombreCliente" placeholder="Nombre del cliente">
+<input type="text" id="cedulaCliente" placeholder="Cédula">
+
+<!-- SERVICIO 1 -->
 <div class="servicio">
     <span>Diseño web - $100.000</span>
-    <input type="checkbox" value="100000" data-nombre="Diseño web">
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">Creamos páginas modernas y optimizadas.</div>
+
+    <input type="checkbox" value="100000" data-nombre="Diseño web" hidden>
 </div>
 
+<!-- SERVICIO 2 -->
 <div class="servicio">
     <span>Tienda online - $150.000</span>
-    <input type="checkbox" value="150000" data-nombre="Tienda online">
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">Tiendas con carrito profesional.</div>
+
+    <input type="checkbox" value="150000" data-nombre="Tienda online" hidden>
 </div>
 
+<!-- SERVICIO 3 -->
 <div class="servicio">
     <span>Mantenimiento - $50.000</span>
-    <input type="checkbox" value="50000" data-nombre="Mantenimiento">
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">Soporte y mejoras constantes.</div>
+
+    <input type="checkbox" value="50000" data-nombre="Mantenimiento" hidden>
 </div>
 
 <button onclick="generarFactura()">Generar factura</button>
@@ -115,6 +180,8 @@ button {
 <div id="factura">
     <div class="factura-header">
         <h2>🧾 FACTURA</h2>
+        <p id="clienteNombre"></p>
+        <p id="clienteCedula"></p>
         <p>Gracias por su compra</p>
     </div>
 
@@ -130,41 +197,81 @@ button {
 </div>
 
 <script>
+
+function toggleCheck(btn) {
+    let check = btn.parentElement.querySelector('input[type="checkbox"]');
+    check.checked = !check.checked;
+    btn.innerText = check.checked ? "Agregado ✔" : "Agregar";
+}
+
+function toggleDesc(btn) {
+    let desc = btn.nextElementSibling;
+    desc.classList.toggle("activa");
+    btn.innerText = desc.classList.contains("activa") ? "Ver menos" : "Ver más";
+}
+
+function formato(num){
+    return num.toLocaleString('es-CO');
+}
+
 function generarFactura() {
-    let checks = document.querySelectorAll('input[type="checkbox"]:checked');
+
+    let nombreCliente = document.getElementById("nombreCliente").value;
+    let cedula = document.getElementById("cedulaCliente").value;
+
+    let checks = document.querySelectorAll('input[type="checkbox"]');
     let lista = document.getElementById("lista");
     let total = 0;
 
     lista.innerHTML = "";
 
+    let hayServicios = false;
+
     checks.forEach(c => {
-        let nombre = c.dataset.nombre;
-        let precio = parseInt(c.value);
+        if (c.checked) {
+            hayServicios = true;
 
-        total += precio;
+            let nombre = c.dataset.nombre;
+            let precio = parseInt(c.value);
 
-        let li = document.createElement("li");
+            total += precio;
 
-        // ✅ CORREGIDO (backticks)
-        li.innerHTML = `<span>${nombre}</span><span>$${precio}</span>`;
-
-        lista.appendChild(li);
+            let li = document.createElement("li");
+            li.innerHTML = `<span>${nombre}</span><span>$${precio}</span>`;
+            lista.appendChild(li);
+        }
     });
 
-    document.getElementById("total").innerText = total;
+    if (!hayServicios) {
+        alert("Agrega al menos un servicio");
+        return;
+    }
+
+    document.getElementById("clienteNombre").innerText = nombreCliente;
+    document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
+
+    document.getElementById("total").innerText = formato(total);
     document.getElementById("factura").style.display = "block";
 }
 
 function descargarPDF() {
-    let factura = document.getElementById("factura");
+    const factura = document.getElementById("factura");
 
-    html2pdf().from(factura).set({
+    html2pdf().set({
         margin: 0.5,
         filename: "factura.pdf",
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
-    }).save();
+        html2canvas: {
+            scale: 2,
+            useCORS: true
+        },
+        jsPDF: {
+            unit: "in",
+            format: "letter",
+            orientation: "portrait"
+        }
+    }).from(factura).save();
 }
+
 </script>
 
 </body>
