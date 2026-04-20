@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -33,6 +34,7 @@ input[type="text"]{
     margin:5px 0;
     border-radius:5px;
     border:1px solid #ccc;
+    box-sizing: border-box;
 }
 
 .servicio {
@@ -51,6 +53,8 @@ input[type="text"]{
     border-radius: 6px;
     margin-top: 8px;
     font-weight: bold;
+    color: #333;
+    cursor: pointer;
 }
 
 /* BOTÓN VER MÁS */
@@ -61,9 +65,10 @@ input[type="text"]{
     border: none;
     color: #555;
     font-size: 13px;
+    cursor: pointer;
 }
 
-/* 🔥 MEJORADO PARA SCROLL */
+/* SCROLL */
 .descripcion {
     max-height: 0;
     overflow: hidden;
@@ -92,6 +97,16 @@ button {
     color: white;
     border-radius: 8px;
     margin-top: 10px;
+    cursor: pointer;
+}
+
+select.opciones {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
 }
 
 /* FACTURA */
@@ -133,151 +148,17 @@ button {
 <body>
 
 <header>
-<h1>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FB Servicios Electricos</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f4f4f4;
-}
-
-header {
-    background: rgb(4, 5, 73);
-    color: white;
-    text-align: center;
-    padding: 15px;
-}
-
-.container {
-    padding: 10px;
-    max-width: 500px;
-    margin: auto;
-}
-
-input[type="text"]{
-    width:100%;
-    padding:10px;
-    margin:5px 0;
-    border-radius:5px;
-    border:1px solid #ccc;
-}
-
-.servicio {
-    background: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-}
-
-/* BOTÓN AGREGAR */
-.btn-agregar {
-    width: 100%;
-    padding: 10px;
-    background: #ece2c8;
-    border: none;
-    border-radius: 6px;
-    margin-top: 8px;
-    font-weight: bold;
-}
-
-/* BOTÓN VER MÁS */
-.btn-ver {
-    width: 100%;
-    padding: 8px;
-    background: none;
-    border: none;
-    color: #555;
-    font-size: 13px;
-}
-
-/* 🔥 MEJORADO PARA SCROLL */
-.descripcion {
-    max-height: 0;
-    overflow: hidden;
-    transition: 0.3s;
-    font-size: 13px;
-    color: #555;
-    margin-top: 5px;
-}
-
-.descripcion.activa {
-    max-height: 220px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-.descripcion p {
-    margin: 10px 0;
-}
-
-/* BOTÓN GENERAL */
-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    background: rgb(4, 5, 73);
-    color: white;
-    border-radius: 8px;
-    margin-top: 10px;
-}
-
-/* FACTURA */
-#factura {
-    display: none;
-    background: white;
-    margin-top: 15px;
-    padding: 20px;
-    border-radius: 12px;
-}
-
-.factura-header {
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-}
-
-#lista {
-    list-style: none;
-    padding: 0;
-}
-
-#lista li {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px dashed #ccc;
-    padding: 5px 0;
-}
-
-.total {
-    text-align: right;
-    font-weight: bold;
-    margin-top: 10px;
-}
-</style>
-
-</head>
-<body>
-
-<header>
-<h1>Servicios</h1>
-<p>Selecciona lo que necesitas</p>
+    <h1>FB Servicios Eléctricos</h1>
+    <p>Selecciona lo que necesitas</p>
 </header>
 
 <div class="container">
 
+```
 <input type="text" id="nombreCliente" placeholder="Nombre del cliente">
 <input type="text" id="cedulaCliente" placeholder="Cédula">
 
-<!-- SERVICIO 1 -->
+<!-- SERVICIO 1: Visita técnica -->
 <div class="servicio">
     <span>Visita técnica de valoración - $20.000</span>
 
@@ -291,7 +172,7 @@ button {
     <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
 </div>
 
-<!-- SERVICIO AIRE ACONDICIONADO -->
+<!-- SERVICIO 2: Aires acondicionado -->
 <div class="servicio">
     <span>Mantenimiento en aires acondicionado</span>
 
@@ -299,20 +180,17 @@ button {
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-
         <p>
             <b>Opción 1 - Mantenimiento preventivo:</b><br>
             Deja tu aire como nuevo. Eliminamos polvo, moho y malos olores, verificamos gas y amperaje.<br>
             <b>$80.000</b>
         </p>
-
         <p>
             <b>Opción 2 - Mantenimiento profundo:</b><br>
             Limpieza profunda de filtros, serpentines y turbina, revisión de gas refrigerante, drenaje y conexiones eléctricas. Mejora el rendimiento, reduce consumo y alarga la vida útil del equipo.<br>
             <b>$120.000</b><br>
             <i>Recomendado cada 4 o 6 meses.</i>
         </p>
-
     </div>
 
     <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
@@ -323,77 +201,70 @@ button {
     <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
 </div>
 
-
+<!-- SERVICIO 3: Instalaciones Eléctricas -->
 <div class="servicio">
-    <span> Instalaciones Electricas </span>
+    <span>Instalaciones Eléctricas</span>
 
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-
         <p>
-            <b>Opción 1 - Instalaciones Electricas:</b><br>
+            <b>Opción 1 - Instalaciones Eléctricas 110V:</b><br>
             Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 110V.<br>
             <b>$20.000</b>
         </p>
-
         <p>
-            <b>Opción 2 - Instalaciones Electricas:</b><br>
-             Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 220V.<br>
-            <b>$35.000</b><br>
-            <i>Recomendado cada 4 o 6 meses.</i>
+            <b>Opción 2 - Instalaciones Eléctricas 220V:</b><br>
+            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 220V.<br>
+            <b>$35.000</b>
         </p>
-
     </div>
 
-    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1 - </option>
-        <option value="120000">Opción 2 - </option>
+    <select class="opciones" data-nombre="Instalaciones Eléctricas">
+        <option value="20000">Opción 1 - 110V</option>
+        <option value="35000">Opción 2 - 220V</option>
     </select>
 
-    <input type="checkbox" data-nombre="Instalaciones Electricas" hidden>
-
+    <input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
 </div>
-    <div class="servicio">
+
+<!-- SERVICIO 4: Reparaciones Menores -->
+<div class="servicio">
     <span>Reparaciones Menores. Soluciones rápidas sin intervenir circuitos principales.</span>
 
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-
         <p>
-            <b>Opción 1 - Mantenimiento preventivo:</b><br>
+            <b>Opción 1:</b><br>
             Cambio de tomacorriente, interruptor o plafón dañado.<br>
             <b>$80.000</b>
         </p>
-
         <p>
-            <b>Opción 2 - Mantenimiento preventivo:</b><br>
+            <b>Opción 2:</b><br>
             Deja tu aire como nuevo. Eliminamos polvo, moho y malos olores, verificamos gas y amperaje.<br>
             <b>$80.000</b>
         </p>
-
         <p>
-            <b>Opción 3 - Mantenimiento profundo:</b><br>
+            <b>Opción 3:</b><br>
             Reparación de cortos en un punto específico, ajuste de empalmes o cambio de roseta con cableado recalentado.<br>
             <b>$120.000</b><br>
             <i>Recomendado cada 4 o 6 meses.</i>
         </p>
-
     </div>
 
-    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1 - Preventivo</option>
-        <option value="80000">Opción 2 - Preventivo</option>
-        <option value="120000">Opción 3 - Profundo</option>
+    <select class="opciones" data-nombre="Reparaciones Menores">
+        <option value="80000">Opción 1</option>
+        <option value="80000">Opción 2</option>
+        <option value="120000">Opción 3</option>
     </select>
 
-    <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
+    <input type="checkbox" data-nombre="Reparaciones Menores" hidden>
 </div>
-    
-    
+
+<button onclick="generarFactura()">Generar Factura</button>
 
 <!-- FACTURA -->
 <div id="factura">
@@ -412,6 +283,7 @@ button {
 
     <button onclick="descargarPDF()">Descargar PDF</button>
 </div>
+```
 
 </div>
 
@@ -429,12 +301,11 @@ function toggleDesc(btn) {
     btn.innerText = desc.classList.contains("activa") ? "Ver menos" : "Ver más";
 }
 
-function formato(num){
+function formato(num) {
     return num.toLocaleString('es-CO');
 }
 
 function generarFactura() {
-
     let nombreCliente = document.getElementById("nombreCliente").value;
     let cedula = document.getElementById("cedulaCliente").value;
 
@@ -446,7 +317,6 @@ function generarFactura() {
 
     checks.forEach(c => {
         if (c.checked) {
-
             let servicio = c.parentElement;
             let select = servicio.querySelector(".opciones");
 
@@ -461,205 +331,13 @@ function generarFactura() {
             total += precio;
 
             let li = document.createElement("li");
-            li.innerHTML = `<span>${nombre}</span><span>$${precio}</span>`;
+            li.innerHTML = `<span>${nombre}</span><span>$${formato(precio)}</span>`;
             lista.appendChild(li);
         }
     });
 
     document.getElementById("clienteNombre").innerText = nombreCliente;
     document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
-
-    document.getElementById("total").innerText = formato(total);
-    document.getElementById("factura").style.display = "block";
-}
-
-function descargarPDF() {
-    let factura = document.getElementById("factura");
-
-    let opciones = {
-        margin: 0.3,
-        filename: "factura.pdf",
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 3, useCORS: true, scrollY: 0 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-    };
-
-    html2pdf().set(opciones).from(factura).outputPdf('blob').then(function (pdf) {
-        let url = URL.createObjectURL(pdf);
-        window.open(url, '_blank');
-
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = "factura.pdf";
-        a.click();
-    });
-}
-
-</script>
-
-</body>
-</html>FB Servicios Electricos</h1>
-<p>Selecciona lo que necesitas</p>
-</header>
-
-<div class="container">
-
-<input type="text" id="nombreCliente" placeholder="Nombre del cliente">
-<input type="text" id="cedulaCliente" placeholder="Cédula">
-
-<!-- SERVICIO 1 -->
-<div class="servicio">
-    <span>Visita técnica de valoración - $20.000</span>
-
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-        Servicio en sitio para identificar la falla eléctrica, realizar mediciones básicas y entregar diagnóstico inicial con cotización del arreglo. Tiene costo independiente.
-    </div>
-
-    <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
-</div>
-
-<!-- SERVICIO AIRE ACONDICIONADO -->
-<div class="servicio">
-    <span>Mantenimiento en aires acondicionado</span>
-
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-
-        <p>
-            <b>Opción 1 - Mantenimiento preventivo:</b><br>
-            Deja tu aire como nuevo. Eliminamos polvo, moho y malos olores, verificamos gas y amperaje.<br>
-            <b>$80.000</b>
-        </p>
-
-        <p>
-            <b>Opción 2 - Mantenimiento profundo:</b><br>
-            Limpieza profunda de filtros, serpentines y turbina, revisión de gas refrigerante, drenaje y conexiones eléctricas. Mejora el rendimiento, reduce consumo y alarga la vida útil del equipo.<br>
-            <b>$120.000</b><br>
-            <i>Recomendado cada 4 o 6 meses.</i>
-        </p>
-
-    </div>
-
-    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1 - Preventivo</option>
-        <option value="120000">Opción 2 - Profundo</option>
-    </select>
-
-    <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
-</div>
-
-
-<div class="servicio">
-    <span> Instalaciones Electricas </span>
-
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-
-        <p>
-            <b>Opción 1 - Instalaciones Electricas:</b><br>
-            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 110V.<br>
-            <b>$20.000</b>
-        </p>
-
-        <p>
-            <b>Opción 2 - Instalaciones Electricas:</b><br>
-             Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 220V.<br>
-            <b>$35.000</b><br>
-            <i>Recomendado cada 4 o 6 meses.</i>
-        </p>
-
-    </div>
-
-    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1 - </option>
-        <option value="120000">Opción 2 - </option>
-    </select>
-
-    <input type="checkbox" data-nombre="Instalaciones Electricas" hidden>
-</div>
-    
-
-<!-- FACTURA -->
-<div id="factura">
-    <div class="factura-header">
-        <h2>🧾 FACTURA</h2>
-        <p id="clienteNombre"></p>
-        <p id="clienteCedula"></p>
-        <p>Gracias por su compra</p>
-    </div>
-
-    <ul id="lista"></ul>
-
-    <div class="total">
-        Total: $<span id="total">0</span>
-    </div>
-
-    <button onclick="descargarPDF()">Descargar PDF</button>
-</div>
-
-</div>
-
-<script>
-
-function toggleCheck(btn) {
-    let check = btn.parentElement.querySelector('input[type="checkbox"]');
-    check.checked = !check.checked;
-    btn.innerText = check.checked ? "Agregado ✔" : "Agregar";
-}
-
-function toggleDesc(btn) {
-    let desc = btn.nextElementSibling;
-    desc.classList.toggle("activa");
-    btn.innerText = desc.classList.contains("activa") ? "Ver menos" : "Ver más";
-}
-
-function formato(num){
-    return num.toLocaleString('es-CO');
-}
-
-function generarFactura() {
-
-    let nombreCliente = document.getElementById("nombreCliente").value;
-    let cedula = document.getElementById("cedulaCliente").value;
-
-    let checks = document.querySelectorAll('input[type="checkbox"]');
-    let lista = document.getElementById("lista");
-    let total = 0;
-
-    lista.innerHTML = "";
-
-    checks.forEach(c => {
-        if (c.checked) {
-
-            let servicio = c.parentElement;
-            let select = servicio.querySelector(".opciones");
-
-            let nombre = c.dataset.nombre;
-            let precio = parseInt(c.value);
-
-            if (select) {
-                nombre = select.dataset.nombre;
-                precio = parseInt(select.value);
-            }
-
-            total += precio;
-
-            let li = document.createElement("li");
-            li.innerHTML = `<span>${nombre}</span><span>$${precio}</span>`;
-            lista.appendChild(li);
-        }
-    });
-
-    document.getElementById("clienteNombre").innerText = nombreCliente;
-    document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
-
     document.getElementById("total").innerText = formato(total);
     document.getElementById("factura").style.display = "block";
 }
