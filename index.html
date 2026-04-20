@@ -255,21 +255,33 @@ function generarFactura() {
 }
 
 function descargarPDF() {
-    const factura = document.getElementById("factura");
+    let factura = document.getElementById("factura");
 
-    html2pdf().set({
-        margin: 0.5,
+    let opciones = {
+        margin: 0.3,
         filename: "factura.pdf",
-        html2canvas: {
-            scale: 2,
-            useCORS: true
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { 
+            scale: 3,
+            useCORS: true,
+            scrollY: 0
         },
-        jsPDF: {
-            unit: "in",
-            format: "letter",
-            orientation: "portrait"
-        }
-    }).from(factura).save();
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    };
+
+    // 👇 Esto arregla el problema en celular
+    html2pdf().set(opciones).from(factura).outputPdf('blob').then(function (pdf) {
+        let url = URL.createObjectURL(pdf);
+
+        // 📱 En celular abre el PDF para descargarlo
+        window.open(url, '_blank');
+
+        // 💻 En PC intenta descargar
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "factura.pdf";
+        a.click();
+    });
 }
 
 </script>
