@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FB Servicios Electricos</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 body {
@@ -81,6 +84,11 @@ input[type="text"]{
     padding-right: 5px;
 }
 
+.descripcion p {
+    margin: 10px 0;
+}
+
+/* BOTÓN GENERAL */
 button {
     width: 100%;
     padding: 12px;
@@ -98,6 +106,41 @@ select.opciones {
     margin-top: 8px;
     border-radius: 6px;
     border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* FACTURA */
+#factura {
+    display: none;
+    background: white;
+    margin-top: 15px;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.factura-header {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+#lista {
+    list-style: none;
+    padding: 0;
+}
+
+#lista li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed #ccc;
+    padding: 5px 0;
+}
+
+.total {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 10px;
 }
 </style>
 
@@ -122,7 +165,7 @@ select.opciones {
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-        Servicio en sitio para identificar la falla eléctrica...
+        Servicio en sitio para identificar la falla eléctrica, realizar mediciones básicas y entregar diagnóstico inicial con cotización del arreglo. Tiene costo independiente.
     </div>
 
     <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
@@ -136,13 +179,21 @@ select.opciones {
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-        <p><b>Opción 1:</b> $80.000</p>
-        <p><b>Opción 2:</b> $120.000</p>
+        <p>
+            <b>Opción 1 - Mantenimiento:</b><br>
+            Limpieza y lavado aire acondicionado.<br>
+            <b>$80.000</b>
+        </p>
+        <p>
+            <b>Opción 2 - Mantenimiento Preventivo:</b><br>
+            Daños electricos, medicion de gases etc.<br>
+            <b>$120.000</b>
+        </p>
     </div>
 
     <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1 - $80.000</option>
-        <option value="120000">Opción 2 - $120.000</option>
+        <option value="80000">Opción 1 - Mantenimiento</option>
+        <option value="120000">Opción 2 - Preventivo</option>
     </select>
 
     <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
@@ -156,13 +207,17 @@ select.opciones {
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-        <p><b>110V:</b> $20.000</p>
-        <p><b>220V:</b> $35.000</p>
+        <p>
+            <b>Opción 1 - 110V:</b> $20.000 por puntos
+        </p>
+        <p>
+            <b>Opción 2 - 220V:</b> $35.000 por puntos
+        </p>
     </div>
 
     <select class="opciones" data-nombre="Instalaciones Eléctricas">
-        <option value="20000">110V - $20.000</option>
-        <option value="35000">220V - $35.000</option>
+        <option value="20000">Opción 1 - 110V</option>
+        <option value="35000">Opción 2 - 220V</option>
     </select>
 
     <input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
@@ -176,7 +231,7 @@ select.opciones {
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-        Reparación de cortos eléctricos...
+        Reparación de cortos en un punto específico...
     </div>
 
     <input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
