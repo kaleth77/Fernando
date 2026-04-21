@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -7,106 +8,281 @@
 
 <style>
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     margin: 0;
     background: #f4f4f4;
 }
+
 header {
     background: rgb(4, 5, 73);
     color: white;
     text-align: center;
     padding: 15px;
 }
+
 .container {
     padding: 10px;
     max-width: 500px;
     margin: auto;
 }
-input {
+
+input[type="text"]{
     width:100%;
     padding:10px;
     margin:5px 0;
     border-radius:5px;
     border:1px solid #ccc;
+    box-sizing: border-box;
 }
+
 .servicio {
-    background:white;
-    padding:15px;
-    margin-bottom:10px;
-    border-radius:10px;
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
 }
-.btn-agregar{
-    width:100%;
-    padding:10px;
-    background:#ece2c8;
-    border:none;
-    border-radius:6px;
+
+/* BOTÓN AGREGAR */
+.btn-agregar {
+    width: 100%;
+    padding: 10px;
+    background: #ece2c8;
+    border: none;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
 }
-button{
-    width:100%;
-    padding:12px;
-    background:rgb(4,5,73);
-    color:white;
-    border:none;
-    border-radius:8px;
-    margin-top:10px;
+
+/* BOTÓN VER MÁS */
+.btn-ver {
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* SCROLL */
+.descripcion {
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s;
+    font-size: 13px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.descripcion.activa {
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.descripcion p {
+    margin: 10px 0;
+}
+
+/* BOTÓN GENERAL */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: rgb(4, 5, 73);
+    color: white;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+select.opciones {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <header>
-<h1>FB Servicios Eléctricos</h1>
-<p>Solicita tu servicio</p>
+    <h1>FB Servicios Eléctricos</h1>
+    <p>Selecciona lo que necesitas</p>
 </header>
 
 <div class="container">
 
-<input id="nombre" placeholder="Nombre">
-<input id="cedula" placeholder="Cédula">
+<input type="text" id="nombreCliente" placeholder="Nombre del cliente">
+<input type="text" id="cedulaCliente" placeholder="Cédula">
 
+<!-- SERVICIO 1 -->
 <div class="servicio">
-Visita técnica - $20.000
-<button onclick="toggle(this)">Agregar</button>
-<input type="checkbox" value="20000" data-nombre="Visita técnica" hidden>
+    <span>Visita técnica de valoración - $20.000</span>
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">
+        Servicio en sitio para identificar la falla eléctrica, realizar mediciones básicas y entregar diagnóstico inicial con cotización del arreglo. Tiene costo independiente.
+    </div>
+
+    <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
 </div>
 
+<!-- SERVICIO 2 -->
 <div class="servicio">
-Reparaciones - $50.000
-<button onclick="toggle(this)">Agregar</button>
-<input type="checkbox" value="50000" data-nombre="Reparaciones" hidden>
+    <span>Mantenimiento en aires acondicionado</span>
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">
+        <p>
+            <b>Opción 1 - Mantenimiento:</b><br>
+            Limpieza y lavado aire acondicionado.<br>
+            <b>$80.000</b>
+        </p>
+        <p>
+            <b>Opción 2 - Mantenimiento Preventivo:</b><br>
+            Daños electricos, medicion de gases etc.<br>
+            <b>$120.000</b>
+        </p>
+    </div>
+
+    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
+        <option value="80000">Opción 1 - Mantenimiento</option>
+        <option value="120000">Opción 2 - Preventivo</option>
+    </select>
+
+    <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
 </div>
 
-<button onclick="enviar()">Pedir servicio</button>
+<!-- SERVICIO 3 -->
+<div class="servicio">
+    <span>Instalaciones Eléctricas</span>
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">
+        <p>
+            <b>Opción 1 - Instalaciones Eléctricas 110V:</b><br>
+            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 110V.<br>
+            <b>$20.000 por puntos</b>
+        </p>
+        <p>
+            <b>Opción 2 - Instalaciones Eléctricas 220V:</b><br>
+            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 220V.<br>
+            <b>$35.000 por puntos</b>
+        </p>
+    </div>
+
+    <select class="opciones" data-nombre="Instalaciones Eléctricas">
+        <option value="20000">Opción 1 - 110V</option>
+        <option value="35000">Opción 2 - 220V</option>
+    </select>
+
+    <input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
+</div>
+
+<!-- SERVICIO 4 -->
+<div class="servicio">
+    <span>Reparaciones menores - $50.000</span>
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">
+        Reparación de cortos en un punto específico, ajuste de empalmes o cambio de roseta con cableado recalentado.
+    </div>
+
+    <input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
+</div>
+
+<!-- OTRO -->
+<div class="servicio">
+    <span>Otro servicio</span>
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <input type="text" placeholder="Nombre del servicio" class="otro-nombre">
+    <input type="text" placeholder="Valor" class="otro-precio">
+    <input type="checkbox" hidden>
+</div>
+
+<button onclick="enviarPedido()">Pedir servicio</button>
 
 </div>
 
 <script>
 
-function toggle(btn){
-let c = btn.parentElement.querySelector("input");
-c.checked = !c.checked;
+function toggleCheck(btn) {
+    let check = btn.parentElement.querySelector('input[type="checkbox"]');
+    check.checked = !check.checked;
+    btn.innerText = check.checked ? "Agregado ✔" : "Agregar";
 }
 
-function enviar(){
-
-let nombre = document.getElementById("nombre").value;
-let cedula = document.getElementById("cedula").value;
-
-let msg = "📩 PEDIDO%0A";
-msg += "Cliente: "+nombre+"%0A";
-msg += "Cédula: "+cedula+"%0A";
-
-document.querySelectorAll("input[type=checkbox]").forEach(c=>{
-if(c.checked){
-msg += "• "+c.dataset.nombre+" - $"+c.value+"%0A";
+function toggleDesc(btn) {
+    let desc = btn.nextElementSibling;
+    desc.classList.toggle("activa");
+    btn.innerText = desc.classList.contains("activa") ? "Ver menos" : "Ver más";
 }
-});
 
-window.open("https://wa.me/573023507438?text="+msg);
-
+function formato(num) {
+    return num.toLocaleString('es-CO');
 }
+
+function enviarPedido() {
+
+    let nombreCliente = document.getElementById("nombreCliente").value;
+    let cedula = document.getElementById("cedulaCliente").value;
+
+    let checks = document.querySelectorAll('input[type="checkbox"]');
+
+    let mensaje = "📩 *Nuevo pedido de servicio*%0A%0A";
+    mensaje += "👤 Cliente: " + nombreCliente + "%0A";
+    mensaje += "🆔 Cédula: " + cedula + "%0A%0A";
+    mensaje += "🛠 Servicios:%0A";
+
+    let total = 0;
+
+    checks.forEach(c => {
+        if (c.checked) {
+
+            let servicio = c.parentElement;
+            let select = servicio.querySelector(".opciones");
+
+            let nombre = c.dataset.nombre;
+            let precio = parseInt(c.value);
+
+            if (select) {
+                nombre = select.dataset.nombre;
+                precio = parseInt(select.value);
+            }
+
+            let otroNombre = servicio.querySelector(".otro-nombre");
+            let otroPrecio = servicio.querySelector(".otro-precio");
+
+            if (otroNombre && otroPrecio && otroNombre.value && otroPrecio.value) {
+                nombre = otroNombre.value;
+                precio = parseInt(otroPrecio.value);
+            }
+
+            total += precio;
+
+            mensaje += `• ${nombre} - $${formato(precio)}%0A`;
+        }
+    });
+
+    mensaje += `%0A💰 Total estimado: $${formato(total)}`;
+
+    window.open(`https://wa.me/573023507438?text=${mensaje}`, '_blank');
+}
+
 </script>
 
 </body>
