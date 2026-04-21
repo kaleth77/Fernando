@@ -3,211 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FB Admin Facturas</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<title>FB Admin - Generador de Facturas</title>
 
 <style>
-body {
-    font-family: Arial;
-    background: #f4f4f4;
-    margin: 0;
-}
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding-bottom: 50px;
+    }
 
-header {
-    background: rgb(4, 5, 73);
-    color: white;
-    text-align: center;
-    padding: 15px;
-}
+    header {
+        background: rgb(4, 5, 73);
+        color: white;
+        text-align: center;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
 
-.container {
-    max-width: 500px;
-    margin: auto;
-    padding: 10px;
-}
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
 
-textarea {
-    width: 100%;
-    height: 150px;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
+    p { color: #555; font-weight: bold; }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background: rgb(4, 5, 73);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    margin-top: 10px;
-}
+    textarea {
+        width: 100%;
+        height: 150px;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+        resize: vertical;
+    }
 
-#factura {
-    display: none;
-    background: white;
-    margin-top: 15px;
-    padding: 20px;
-    border-radius: 12px;
-}
+    button {
+        width: 100%;
+        padding: 15px;
+        background: rgb(4, 5, 73);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
 
-.factura-header {
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-}
+    button:hover {
+        background: rgb(10, 12, 120);
+    }
 
-#lista {
-    list-style: none;
-    padding: 0;
-}
+    .btn-download {
+        background: #28a745;
+        display: none;
+    }
 
-#lista li {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px dashed #ccc;
-    padding: 5px 0;
-}
+    .btn-download:hover {
+        background: #218838;
+    }
 
-.total {
-    text-align: right;
-    font-weight: bold;
-    margin-top: 10px;
-    font-size: 20px;
-    color: green;
-}
+    #resultado {
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        display: none;
+    }
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>Panel Admin</h1>
-<p>Generar Factura</p>
+    <h1>FB SERVICIOS ELÉCTRICOS</h1>
+    <p>Panel Administrativo de Facturación</p>
 </header>
 
 <div class="container">
+    <p>Pega el pedido de WhatsApp aquí:</p>
+    <textarea id="pedido" placeholder="👤 Cliente: Nombre&#10;🆔 Cédula: 12345&#10;• Servicio $50.000&#10;Total: $50.000"></textarea>
 
-<p>Pega aquí el pedido:</p>
-<textarea id="pedido"></textarea>
+    <button onclick="generarFacturaImagen()">Generar Factura</button>
 
-<button onclick="generarFactura()">Generar factura</button>
-
-<div id="factura">
-
-    <div class="factura-header">
-        <h2>🧾 FACTURA</h2>
-        <p id="clienteNombre"></p>
-        <p id="clienteCedula"></p>
-        <p>Gracias por su compra</p>
+    <div id="resultado">
+        <canvas id="facturaCanvas"></canvas>
+        <button id="btnDescargar" class="btn-download" onclick="descargarImagen()">Descargar Factura (JPG)</button>
     </div>
-
-    <ul id="lista"></ul>
-
-    <div class="total" id="totalTexto">
-        Total: $0
-    </div>
-
-    <button onclick="descargarPDF()">Descargar PDF</button>
-
-</div>
-
 </div>
 
 <script>
+    const canvas = document.getElementById('facturaCanvas');
+    const ctx = canvas.getContext('2d');
+    const imgFondo = new Image();
+    
+    // Carga la imagen que subiste al repositorio
+    imgFondo.src = 'factura.JPG'; 
 
-let totalGlobal = 0;
-
-function formato(num){
-    return num.toLocaleString('es-CO');
-}
-
-function generarFactura(){
-
-    let texto = document.getElementById("pedido").value;
-    let lineas = texto.split("\n");
-
-    let lista = document.getElementById("lista");
-    let total = 0;
-    let totalDetectado = null;
-
-    lista.innerHTML = "";
-
-    let nombre = "";
-    let cedula = "";
-
-    lineas.forEach(l => {
-
-        l = l.trim();
-
-        if(l.includes("Cliente")){
-            nombre = l.replace("👤 Cliente:", "").trim();
-        }
-
-        if(l.includes("Cédula")){
-            cedula = l.replace("🆔 Cédula:", "").trim();
-        }
-
-        if(l.includes("Total")){
-            let partes = l.split("$");
-            if(partes[1]){
-                totalDetectado = parseInt(partes[1].replace(/\./g,""));
-            }
-        }
-
-        if(l.includes("$") && !l.includes("Total")){
-            let partes = l.split("$");
-
-            let nombreServicio = partes[0].replace("•", "").trim();
-            let precio = parseInt(partes[1].replace(/\./g,""));
-
-            if(!isNaN(precio)){
-                total += precio;
-
-                let li = document.createElement("li");
-                li.innerHTML = `<span>${nombreServicio}</span><span>$${formato(precio)}</span>`;
-                lista.appendChild(li);
-            }
-        }
-
-    });
-
-    if(totalDetectado !== null){
-        total = totalDetectado;
+    function formatoMoneda(num) {
+        return num.toLocaleString('es-CO');
     }
 
-    totalGlobal = total;
+    function generarFacturaImagen() {
+        const texto = document.getElementById("pedido").value;
+        if (!texto.trim()) return alert("Por favor, pega el contenido del pedido.");
 
-    document.getElementById("clienteNombre").innerText = "Cliente: " + nombre;
-    document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
+        const lineas = texto.split("\n");
+        let nombre = "", cedula = "", total = "0", servicios = [];
 
-    // 🔥 ESCRIBIR TOTAL COMO TEXTO PLANO (CLAVE)
-    document.getElementById("totalTexto").innerHTML = "Total: $" + formato(total);
+        // Procesar el texto pegado
+        lineas.forEach(l => {
+            l = l.trim();
+            if (l.toLowerCase().includes("cliente")) nombre = l.split(":")[1]?.trim() || "";
+            if (l.toLowerCase().includes("cédula") || l.toLowerCase().includes("cedula")) cedula = l.split(":")[1]?.trim() || "";
+            if (l.toLowerCase().includes("total")) {
+                let partes = l.split("$");
+                if (partes[1]) total = partes[1].trim();
+            } else if (l.includes("$")) {
+                servicios.push(l.replace("•", "").trim());
+            }
+        });
 
-    document.getElementById("factura").style.display = "block";
-}
+        // Configurar el canvas con el tamaño original de la imagen cuando cargue
+        canvas.width = imgFondo.width;
+        canvas.height = imgFondo.height;
 
+        // Dibujar Fondo
+        ctx.drawImage(imgFondo, 0, 0);
 
-function descargarPDF() {
+        // --- AJUSTE DE TEXTO SOBRE LA IMAGEN ---
+        ctx.fillStyle = "#040549"; // Color azul oscuro de tu marca
+        
+        // Dibujar Cliente y Cédula
+        ctx.font = "bold 30px Arial";
+        ctx.fillText("CLIENTE: " + nombre.toUpperCase(), 100, 420);
+        ctx.fillText("CÉDULA: " + cedula, 100, 465);
 
-    let factura = document.getElementById("factura");
+        // Dibujar Lista de Servicios
+        ctx.font = "26px Arial";
+        ctx.fillStyle = "#333";
+        let yInicio = 560;
+        servicios.forEach((s) => {
+            ctx.fillText(s, 100, yInicio);
+            yInicio += 45; // Espacio entre líneas
+        });
 
-    let opciones = {
-        margin: 0.3,
-        filename: "factura.pdf",
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 3 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+        // Dibujar Total Destacado
+        ctx.font = "bold 45px Arial";
+        ctx.fillStyle = "#040549";
+        ctx.fillText("TOTAL: $" + total, 100, 980);
+
+        // Mostrar elementos
+        canvas.style.display = "inline-block";
+        document.getElementById("btnDescargar").style.display = "block";
+        
+        // Scroll suave hasta la factura generada
+        canvas.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function descargarImagen() {
+        const link = document.createElement('a');
+        link.download = 'factura_fb_servicios.jpg';
+        link.href = canvas.toDataURL('image/jpeg', 0.9);
+        link.click();
+    }
+
+    // Manejo de errores si la imagen no carga
+    imgFondo.onerror = function() {
+        alert("No se pudo cargar 'factura.JPG'. Asegúrate de que el nombre sea exacto (mayúsculas/minúsculas) y esté en la misma carpeta.");
     };
-
-    setTimeout(() => {
-        html2pdf().set(opciones).from(factura).save();
-    }, 700);
-}
-
 </script>
 
 </body>
