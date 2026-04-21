@@ -261,11 +261,12 @@ function generarFactura() {
     // 🔥 GENERAR PDF Y ENVIAR LINK
     html2pdf().from(document.getElementById("factura")).outputPdf('blob').then(function(pdf){
 
-        let url = URL.createObjectURL(pdf);
+        let mensajeFinal = mensaje + "\n📄 Descargar factura:\n" + url;
 
-        let mensajeFinal = mensaje + `%0A📄 Descargar factura:%0A${encodeURIComponent(url)}`;
+// CODIFICAR TODO EL MENSAJE COMPLETO
+let mensajeCodificado = encodeURIComponent(mensajeFinal);
 
-        window.open(`https://wa.me/573023507438?text=${mensajeFinal}`, '_blank');
+window.open(`https://wa.me/573023507438?text=${mensajeCodificado}`, '_blank');
 
     });
 }
