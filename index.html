@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -32,6 +31,7 @@ input[type="text"]{
     margin:5px 0;
     border-radius:5px;
     border:1px solid #ccc;
+    box-sizing: border-box;
 }
 
 .servicio {
@@ -39,6 +39,46 @@ input[type="text"]{
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 10px;
+}
+
+/* BOTÓN AGREGAR */
+.btn-agregar {
+    width: 100%;
+    padding: 10px;
+    background: #ece2c8;
+    border: none;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+/* BOTÓN VER MÁS */
+.btn-ver {
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* SCROLL */
+.descripcion {
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s;
+    font-size: 13px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.descripcion.activa {
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
 button {
@@ -51,14 +91,22 @@ button {
     margin-top: 10px;
     cursor: pointer;
 }
+
+select.opciones {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
 </style>
 
 </head>
 <body>
 
 <header>
-<h1>FB Servicios Eléctricos</h1>
-<p>Solicita tu servicio</p>
+    <h1>FB Servicios Eléctricos</h1>
+    <p>Selecciona lo que necesitas</p>
 </header>
 
 <div class="container">
@@ -68,51 +116,79 @@ button {
 
 <!-- SERVICIO 1 -->
 <div class="servicio">
-<span>Visita técnica de valoración - $20.000</span>
-<button onclick="toggleCheck(this)">Agregar</button>
-<input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
+    <span>Visita técnica de valoración - $20.000</span>
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">
+        Servicio en sitio para identificar la falla eléctrica...
+    </div>
+
+    <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
 </div>
 
 <!-- SERVICIO 2 -->
 <div class="servicio">
-<span>Mantenimiento aire acondicionado</span>
-<button onclick="toggleCheck(this)">Agregar</button>
+    <span>Mantenimiento en aires acondicionado</span>
 
-<select class="opciones" data-nombre="Mantenimiento aire acondicionado">
-<option value="80000">Mantenimiento $80.000</option>
-<option value="120000">Preventivo $120.000</option>
-</select>
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
-<input type="checkbox" data-nombre="Mantenimiento aire acondicionado" hidden>
+    <div class="descripcion">
+        <p><b>Opción 1:</b> $80.000</p>
+        <p><b>Opción 2:</b> $120.000</p>
+    </div>
+
+    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
+        <option value="80000">Opción 1 - $80.000</option>
+        <option value="120000">Opción 2 - $120.000</option>
+    </select>
+
+    <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
 </div>
 
 <!-- SERVICIO 3 -->
 <div class="servicio">
-<span>Instalaciones Eléctricas</span>
-<button onclick="toggleCheck(this)">Agregar</button>
+    <span>Instalaciones Eléctricas</span>
 
-<select class="opciones" data-nombre="Instalaciones Eléctricas">
-<option value="20000">110V $20.000</option>
-<option value="35000">220V $35.000</option>
-</select>
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
-<input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
+    <div class="descripcion">
+        <p><b>110V:</b> $20.000</p>
+        <p><b>220V:</b> $35.000</p>
+    </div>
+
+    <select class="opciones" data-nombre="Instalaciones Eléctricas">
+        <option value="20000">110V - $20.000</option>
+        <option value="35000">220V - $35.000</option>
+    </select>
+
+    <input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
 </div>
 
 <!-- SERVICIO 4 -->
 <div class="servicio">
-<span>Reparaciones menores - $50.000</span>
-<button onclick="toggleCheck(this)">Agregar</button>
-<input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
+    <span>Reparaciones menores - $50.000</span>
+
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+    <div class="descripcion">
+        Reparación de cortos eléctricos...
+    </div>
+
+    <input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
 </div>
 
 <!-- OTRO -->
 <div class="servicio">
-<span>Otro servicio</span>
-<button onclick="toggleCheck(this)">Agregar</button>
-<input type="text" placeholder="Nombre del servicio" class="otro-nombre">
-<input type="text" placeholder="Valor" class="otro-precio">
-<input type="checkbox" hidden>
+    <span>Otro servicio</span>
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <input type="text" placeholder="Nombre del servicio" class="otro-nombre">
+    <input type="text" placeholder="Valor" class="otro-precio">
+    <input type="checkbox" hidden>
 </div>
 
 <button onclick="enviarPedido()">Pedir servicio</button>
@@ -121,57 +197,63 @@ button {
 
 <script>
 
-function toggleCheck(btn){
-let check = btn.parentElement.querySelector('input[type="checkbox"]');
-check.checked = !check.checked;
-btn.innerText = check.checked ? "Agregado ✔" : "Agregar";
+function toggleCheck(btn) {
+    let check = btn.parentElement.querySelector('input[type="checkbox"]');
+    check.checked = !check.checked;
+    btn.innerText = check.checked ? "Agregado ✔" : "Agregar";
 }
 
-function enviarPedido(){
+function toggleDesc(btn) {
+    let desc = btn.nextElementSibling;
+    desc.classList.toggle("activa");
+    btn.innerText = desc.classList.contains("activa") ? "Ver menos" : "Ver más";
+}
 
-let nombreCliente = document.getElementById("nombreCliente").value;
-let cedula = document.getElementById("cedulaCliente").value;
+function enviarPedido() {
 
-let checks = document.querySelectorAll('input[type="checkbox"]');
+    let nombreCliente = document.getElementById("nombreCliente").value;
+    let cedula = document.getElementById("cedulaCliente").value;
 
-let mensaje = "📩 *Nuevo pedido de servicio*%0A%0A";
-mensaje += "👤 Cliente: " + nombreCliente + "%0A";
-mensaje += "🆔 Cédula: " + cedula + "%0A%0A";
-mensaje += "🛠 Servicios:%0A";
+    let checks = document.querySelectorAll('input[type="checkbox"]');
 
-let total = 0;
+    let mensaje = "📩 *Nuevo pedido de servicio*%0A%0A";
+    mensaje += "👤 Cliente: " + nombreCliente + "%0A";
+    mensaje += "🆔 Cédula: " + cedula + "%0A%0A";
+    mensaje += "🛠 Servicios:%0A";
 
-checks.forEach(c => {
-    if(c.checked){
+    let total = 0;
 
-        let servicio = c.parentElement;
-        let select = servicio.querySelector(".opciones");
+    checks.forEach(c => {
+        if (c.checked) {
 
-        let nombre = c.dataset.nombre;
-        let precio = parseInt(c.value);
+            let servicio = c.parentElement;
+            let select = servicio.querySelector(".opciones");
 
-        if(select){
-            nombre = select.dataset.nombre;
-            precio = parseInt(select.value);
+            let nombre = c.dataset.nombre;
+            let precio = parseInt(c.value);
+
+            if (select) {
+                nombre = select.dataset.nombre;
+                precio = parseInt(select.value);
+            }
+
+            let otroNombre = servicio.querySelector(".otro-nombre");
+            let otroPrecio = servicio.querySelector(".otro-precio");
+
+            if (otroNombre && otroPrecio && otroNombre.value && otroPrecio.value) {
+                nombre = otroNombre.value;
+                precio = parseInt(otroPrecio.value);
+            }
+
+            total += precio;
+
+            mensaje += `• ${nombre} - $${precio}%0A`;
         }
+    });
 
-        let otroNombre = servicio.querySelector(".otro-nombre");
-        let otroPrecio = servicio.querySelector(".otro-precio");
+    mensaje += `%0A💰 Total estimado: $${total}`;
 
-        if(otroNombre && otroPrecio && otroNombre.value && otroPrecio.value){
-            nombre = otroNombre.value;
-            precio = parseInt(otroPrecio.value);
-        }
-
-        total += precio;
-
-        mensaje += `• ${nombre} - $${precio}%0A`;
-    }
-});
-
-mensaje += `%0A💰 Total estimado: $${total}`;
-
-window.open(`https://wa.me/573023507438?text=${mensaje}`, '_blank');
+    window.open(`https://wa.me/573023507438?text=${mensaje}`, '_blank');
 }
 
 </script>
