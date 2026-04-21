@@ -44,7 +44,6 @@ input[type="text"]{
     border-radius: 10px;
 }
 
-/* BOTÓN AGREGAR */
 .btn-agregar {
     width: 100%;
     padding: 10px;
@@ -57,7 +56,6 @@ input[type="text"]{
     cursor: pointer;
 }
 
-/* BOTÓN VER MÁS */
 .btn-ver {
     width: 100%;
     padding: 8px;
@@ -68,7 +66,6 @@ input[type="text"]{
     cursor: pointer;
 }
 
-/* SCROLL */
 .descripcion {
     max-height: 0;
     overflow: hidden;
@@ -84,11 +81,6 @@ input[type="text"]{
     padding-right: 5px;
 }
 
-.descripcion p {
-    margin: 10px 0;
-}
-
-/* BOTÓN GENERAL */
 button {
     width: 100%;
     padding: 12px;
@@ -106,23 +98,14 @@ select.opciones {
     margin-top: 8px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    font-size: 14px;
 }
 
-/* FACTURA */
 #factura {
     display: none;
     background: white;
     margin-top: 15px;
     padding: 20px;
     border-radius: 12px;
-}
-
-.factura-header {
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
 }
 
 #lista {
@@ -133,14 +116,11 @@ select.opciones {
 #lista li {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px dashed #ccc;
-    padding: 5px 0;
 }
 
 .total {
     text-align: right;
     font-weight: bold;
-    margin-top: 10px;
 }
 </style>
 
@@ -148,8 +128,8 @@ select.opciones {
 <body>
 
 <header>
-    <h1>FB Servicios Eléctricos</h1>
-    <p>Selecciona lo que necesitas</p>
+<h1>FB Servicios Eléctricos</h1>
+<p>Selecciona lo que necesitas</p>
 </header>
 
 <div class="container">
@@ -157,33 +137,82 @@ select.opciones {
 <input type="text" id="nombreCliente" placeholder="Nombre del cliente">
 <input type="text" id="cedulaCliente" placeholder="Cédula">
 
-<!-- SERVICIOS (igual que los tuyos) -->
-
-<!-- ✅ OTRO -->
+<!-- SERVICIO 1 -->
 <div class="servicio">
-    <span>Otro servicio</span>
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <input type="text" placeholder="Nombre del servicio" class="otro-nombre">
-    <input type="text" placeholder="Valor" class="otro-precio">
-    <input type="checkbox" data-nombre="Otro servicio" hidden>
+<span>Visita técnica de valoración - $20.000</span>
+<button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+<button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+<div class="descripcion">Servicio en sitio...</div>
+<input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
+</div>
+
+<!-- SERVICIO 2 -->
+<div class="servicio">
+<span>Mantenimiento en aires acondicionado</span>
+<button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+<button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+<div class="descripcion">
+<p><b>Opción 1:</b> $80.000</p>
+<p><b>Opción 2:</b> $120.000</p>
+</div>
+
+<select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
+<option value="80000">Opción 1</option>
+<option value="120000">Opción 2</option>
+</select>
+
+<input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
+</div>
+
+<!-- SERVICIO 3 -->
+<div class="servicio">
+<span>Instalaciones Eléctricas</span>
+<button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+<button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+
+<div class="descripcion">
+<p><b>110V:</b> $20.000</p>
+<p><b>220V:</b> $35.000</p>
+</div>
+
+<select class="opciones" data-nombre="Instalaciones Eléctricas">
+<option value="20000">110V</option>
+<option value="35000">220V</option>
+</select>
+
+<input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
+</div>
+
+<!-- SERVICIO 4 -->
+<div class="servicio">
+<span>Reparaciones menores - $50.000</span>
+<button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+<button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
+<div class="descripcion">Reparación de cortos...</div>
+<input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
+</div>
+
+<!-- OTRO -->
+<div class="servicio">
+<span>Otro servicio</span>
+<button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+<input type="text" placeholder="Nombre del servicio" class="otro-nombre">
+<input type="text" placeholder="Valor" class="otro-precio">
+<input type="checkbox" data-nombre="Otro servicio" hidden>
 </div>
 
 <!-- FACTURA -->
 <div id="factura">
-    <div class="factura-header">
-        <h2>🧾 FACTURA</h2>
-        <p id="clienteNombre"></p>
-        <p id="clienteCedula"></p>
-        <p>Gracias por su compra</p>
-    </div>
+<h2>🧾 FACTURA</h2>
+<p id="clienteNombre"></p>
+<p id="clienteCedula"></p>
 
-    <ul id="lista"></ul>
+<ul id="lista"></ul>
 
-    <div class="total">
-        Total: $<span id="total">0</span>
-    </div>
-
-    <button onclick="descargarPDF()">Descargar PDF</button>
+<div class="total">
+Total: $<span id="total">0</span>
+</div>
 </div>
 
 <button onclick="generarFactura()">Generar factura</button>
@@ -192,89 +221,85 @@ select.opciones {
 
 <script>
 
-function toggleCheck(btn) {
-    let check = btn.parentElement.querySelector('input[type="checkbox"]');
-    check.checked = !check.checked;
-    btn.innerText = check.checked ? "Agregado ✔" : "Agregar";
+function toggleCheck(btn){
+let check = btn.parentElement.querySelector('input[type="checkbox"]');
+check.checked = !check.checked;
 }
 
-function toggleDesc(btn) {
-    let desc = btn.nextElementSibling;
-    desc.classList.toggle("activa");
-    btn.innerText = desc.classList.contains("activa") ? "Ver menos" : "Ver más";
+function toggleDesc(btn){
+let desc = btn.nextElementSibling;
+desc.classList.toggle("activa");
 }
 
-function formato(num) {
-    return num.toLocaleString('es-CO');
+function formato(num){
+return num.toLocaleString('es-CO');
 }
 
-/* 🔥 FUNCIÓN FINAL CON PDF + WHATSAPP */
-function generarFactura() {
-    let nombreCliente = document.getElementById("nombreCliente").value;
-    let cedula = document.getElementById("cedulaCliente").value;
+function generarFactura(){
 
-    let checks = document.querySelectorAll('input[type="checkbox"]');
-    let lista = document.getElementById("lista");
-    let total = 0;
-    let mensaje = "🧾 *Factura FB Servicios Eléctricos*%0A";
+let nombreCliente = document.getElementById("nombreCliente").value;
+let cedula = document.getElementById("cedulaCliente").value;
 
-    lista.innerHTML = "";
+let checks = document.querySelectorAll('input[type="checkbox"]');
+let lista = document.getElementById("lista");
 
-    checks.forEach(c => {
-        if (c.checked) {
-            let servicio = c.parentElement;
-            let select = servicio.querySelector(".opciones");
+let total = 0;
+let mensaje = "🧾 Factura FB Servicios Eléctricos\n";
 
-            let nombre = c.dataset.nombre;
-            let precio = parseInt(c.value);
+lista.innerHTML = "";
 
-            if (select) {
-                nombre = select.dataset.nombre;
-                precio = parseInt(select.value);
-            }
+checks.forEach(c => {
 
-            let otroNombre = servicio.querySelector(".otro-nombre");
-            let otroPrecio = servicio.querySelector(".otro-precio");
+if(c.checked){
 
-            if (otroNombre && otroPrecio && otroNombre.value && otroPrecio.value) {
-                nombre = otroNombre.value;
-                precio = parseInt(otroPrecio.value);
-            }
+let servicio = c.parentElement;
+let select = servicio.querySelector(".opciones");
 
-            total += precio;
+let nombre = c.dataset.nombre;
+let precio = parseInt(c.value);
 
-            let li = document.createElement("li");
-            li.innerHTML = `<span>${nombre}</span><span>$${formato(precio)}</span>`;
-            lista.appendChild(li);
+if(select){
+nombre = select.dataset.nombre;
+precio = parseInt(select.value);
+}
 
-            mensaje += `• ${nombre}: $${formato(precio)}%0A`;
-        }
-    });
+let otroNombre = servicio.querySelector(".otro-nombre");
+let otroPrecio = servicio.querySelector(".otro-precio");
 
-    document.getElementById("clienteNombre").innerText = nombreCliente;
-    document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
-    document.getElementById("total").innerText = formato(total);
-    document.getElementById("factura").style.display = "block";
+if(otroNombre && otroPrecio && otroNombre.value && otroPrecio.value){
+nombre = otroNombre.value;
+precio = parseInt(otroPrecio.value);
+}
 
-    mensaje += `%0A💰 *Total:* $${formato(total)}`;
+total += precio;
 
-    // 🔥 GENERAR PDF Y ENVIAR LINK
-    html2pdf().from(document.getElementById("factura")).outputPdf('blob').then(function(pdf){
+let li = document.createElement("li");
+li.innerHTML = `<span>${nombre}</span><span>$${formato(precio)}</span>`;
+lista.appendChild(li);
 
-        let mensajeFinal = mensaje + "\n📄 Descargar factura:\n" + url;
+mensaje += `• ${nombre}: $${formato(precio)}\n`;
+}
+});
 
-// CODIFICAR TODO EL MENSAJE COMPLETO
+document.getElementById("clienteNombre").innerText = nombreCliente;
+document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
+document.getElementById("total").innerText = formato(total);
+document.getElementById("factura").style.display = "block";
+
+mensaje += `\n💰 Total: $${formato(total)}\n\n`;
+
+html2pdf().from(document.getElementById("factura")).outputPdf('blob').then(function(pdf){
+
+let url = URL.createObjectURL(pdf);
+
+let mensajeFinal = mensaje + "📄 Descargar factura:\n" + url;
+
 let mensajeCodificado = encodeURIComponent(mensajeFinal);
 
 window.open(`https://wa.me/573023507438?text=${mensajeCodificado}`, '_blank');
 
-    });
-}
+});
 
-function descargarPDF() {
-    let factura = document.getElementById("factura");
-
-    html2pdf().from(factura).save("factura.pdf");
 }
 
 </script>
