@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Admin Facturas</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:20px;
+}
+
+textarea{
+width:100%;
+height:150px;
+padding:10px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:rgb(4,5,73);
+color:white;
+border:none;
+margin-top:10px;
+}
+
+#factura{
+background:white;
+padding:20px;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Panel Admin - Generar Factura</h2>
+
+<p>Pega aquí el pedido de WhatsApp:</p>
+
+<textarea id="pedido"></textarea>
+
+<button onclick="generar()">Generar factura</button>
+
+<div id="factura"></div>
+
+<script>
+
+function generar(){
+
+let texto = document.getElementById("pedido").value;
+
+let lineas = texto.split("\n");
+
+let html = "<h2>🧾 FACTURA</h2><ul>";
+let total = 0;
+
+lineas.forEach(l=>{
+if(l.includes("$")){
+let partes = l.split("$");
+let precio = parseInt(partes[1].replace(/\./g,""));
+
+total += precio;
+html += "<li>"+l+"</li>";
+}
+});
+
+html += "</ul>";
+html += "<h3>Total: $"+total.toLocaleString("es-CO")+"</h3>";
+
+document.getElementById("factura").innerHTML = html;
+
+}
+
+function descargar(){
+html2pdf().from(document.getElementById("factura")).save("factura.pdf");
+}
+
+</script>
+
+<button onclick="descargar()">Descargar PDF</button>
+
+</body>
+</html>
