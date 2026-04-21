@@ -76,6 +76,7 @@ button {
     text-align: right;
     font-weight: bold;
     margin-top: 10px;
+    font-size: 18px;
 }
 </style>
 </head>
@@ -128,6 +129,7 @@ function generarFactura(){
 
     let lista = document.getElementById("lista");
     let total = 0;
+    let totalDetectado = null;
 
     lista.innerHTML = "";
 
@@ -148,8 +150,16 @@ function generarFactura(){
             cedula = l.replace("🆔 Cédula:", "").trim();
         }
 
+        // 💰 TOTAL SI VIENE EN EL MENSAJE
+        if(l.includes("Total")){
+            let partes = l.split("$");
+            if(partes[1]){
+                totalDetectado = parseInt(partes[1].replace(/\./g,""));
+            }
+        }
+
         // 🛠 SERVICIOS
-        if(l.includes("$")){
+        if(l.includes("$") && !l.includes("Total")){
             let partes = l.split("$");
 
             let nombreServicio = partes[0].replace("•", "").trim();
@@ -166,7 +176,11 @@ function generarFactura(){
 
     });
 
-    // 🔥 MOSTRAR DATOS LIMPIOS
+    // 🔥 SI HAY TOTAL EN MENSAJE, USARLO
+    if(totalDetectado !== null){
+        total = totalDetectado;
+    }
+
     document.getElementById("clienteNombre").innerText = "Cliente: " + nombre;
     document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
 
@@ -175,7 +189,7 @@ function generarFactura(){
 }
 
 
-// 🔥 PDF FUNCIONANDO
+// 🔥 DESCARGAR PDF
 function descargarPDF() {
 
     let factura = document.getElementById("factura");
