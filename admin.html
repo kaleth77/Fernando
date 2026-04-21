@@ -48,9 +48,9 @@ button {
 #factura {
     display: none;
     background: white;
+    margin-top: 15px;
     padding: 20px;
     border-radius: 12px;
-    margin-top: 15px;
 }
 
 .factura-header {
@@ -76,7 +76,8 @@ button {
     text-align: right;
     font-weight: bold;
     margin-top: 10px;
-    font-size: 18px;
+    font-size: 20px;
+    color: green;
 }
 </style>
 </head>
@@ -140,17 +141,14 @@ function generarFactura(){
 
         l = l.trim();
 
-        // 👤 NOMBRE
         if(l.includes("Cliente")){
             nombre = l.replace("👤 Cliente:", "").trim();
         }
 
-        // 🆔 CÉDULA
         if(l.includes("Cédula")){
             cedula = l.replace("🆔 Cédula:", "").trim();
         }
 
-        // 💰 TOTAL SI VIENE EN EL MENSAJE
         if(l.includes("Total")){
             let partes = l.split("$");
             if(partes[1]){
@@ -158,7 +156,6 @@ function generarFactura(){
             }
         }
 
-        // 🛠 SERVICIOS
         if(l.includes("$") && !l.includes("Total")){
             let partes = l.split("$");
 
@@ -176,20 +173,19 @@ function generarFactura(){
 
     });
 
-    // 🔥 SI HAY TOTAL EN MENSAJE, USARLO
     if(totalDetectado !== null){
         total = totalDetectado;
     }
 
     document.getElementById("clienteNombre").innerText = "Cliente: " + nombre;
     document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
-
     document.getElementById("total").innerText = formato(total);
+
     document.getElementById("factura").style.display = "block";
 }
 
 
-// 🔥 DESCARGAR PDF
+// 🔥 ARREGLO DEL PDF (CON DELAY)
 function descargarPDF() {
 
     let factura = document.getElementById("factura");
@@ -202,7 +198,9 @@ function descargarPDF() {
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
     };
 
-    html2pdf().set(opciones).from(factura).save();
+    setTimeout(() => {
+        html2pdf().set(opciones).from(factura).save();
+    }, 600); // 🔥 delay para asegurar que salga el total
 }
 
 </script>
