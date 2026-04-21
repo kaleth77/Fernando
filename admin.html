@@ -109,7 +109,6 @@ button {
         Total: $<span id="total">0</span>
     </div>
 
-    <!-- 🔥 BOTÓN REAL -->
     <button onclick="descargarPDF()">Descargar PDF</button>
 
 </div>
@@ -132,35 +131,51 @@ function generarFactura(){
 
     lista.innerHTML = "";
 
+    let nombre = "";
+    let cedula = "";
+
     lineas.forEach(l => {
 
+        l = l.trim();
+
+        // 👤 NOMBRE
+        if(l.includes("Cliente")){
+            nombre = l.replace("👤 Cliente:", "").trim();
+        }
+
+        // 🆔 CÉDULA
+        if(l.includes("Cédula")){
+            cedula = l.replace("🆔 Cédula:", "").trim();
+        }
+
+        // 🛠 SERVICIOS
         if(l.includes("$")){
             let partes = l.split("$");
+
+            let nombreServicio = partes[0].replace("•", "").trim();
             let precio = parseInt(partes[1].replace(/\./g,""));
 
-            total += precio;
+            if(!isNaN(precio)){
+                total += precio;
 
-            let li = document.createElement("li");
-            li.innerHTML = `<span>${partes[0]}</span><span>$${formato(precio)}</span>`;
-            lista.appendChild(li);
-        }
-
-        if(l.includes("Cliente")){
-            document.getElementById("clienteNombre").innerText = l;
-        }
-
-        if(l.includes("Cédula")){
-            document.getElementById("clienteCedula").innerText = l;
+                let li = document.createElement("li");
+                li.innerHTML = `<span>${nombreServicio}</span><span>$${formato(precio)}</span>`;
+                lista.appendChild(li);
+            }
         }
 
     });
+
+    // 🔥 MOSTRAR DATOS LIMPIOS
+    document.getElementById("clienteNombre").innerText = "Cliente: " + nombre;
+    document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
 
     document.getElementById("total").innerText = formato(total);
     document.getElementById("factura").style.display = "block";
 }
 
 
-// 🔥 DESCARGA SEGURA
+// 🔥 PDF FUNCIONANDO
 function descargarPDF() {
 
     let factura = document.getElementById("factura");
