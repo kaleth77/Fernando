@@ -154,93 +154,76 @@ select.opciones {
 
 <div class="container">
 
-```
 <input type="text" id="nombreCliente" placeholder="Nombre del cliente">
 <input type="text" id="cedulaCliente" placeholder="Cédula">
 
-<!-- SERVICIO 1: Visita técnica -->
+<!-- SERVICIO 1 -->
 <div class="servicio">
     <span>Visita técnica de valoración - $20.000</span>
-
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
     <div class="descripcion">
-        Servicio en sitio para identificar la falla eléctrica, realizar mediciones básicas y entregar diagnóstico inicial con cotización del arreglo. Tiene costo independiente.
+        Servicio en sitio para identificar la falla eléctrica...
     </div>
-
     <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
 </div>
 
-<!-- SERVICIO 2: Aires acondicionado -->
+<!-- SERVICIO 2 -->
 <div class="servicio">
     <span>Mantenimiento en aires acondicionado</span>
-
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-        <p>
-            <b>Opción 1 - Mantenimiento:</b><br>
-            Limpieza y lavado aire acondicionado.<br>
-            <b>$80.000</b>
-        </p>
-        <p>
-            <b>Opción 2 - Mantenimiento Preventivo:</b><br>
-            Daños electricos, medicion de gases etc.<br>
-            <b>$100.000</b><br>
-            
-        </p>
+        <p><b>Opción 1:</b> $80.000</p>
+        <p><b>Opción 2:</b> $120.000</p>
     </div>
 
     <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1 - Mantenimiento</option>
-        <option value="120000">Opción 2 - Preventivo</option>
+        <option value="80000">Opción 1</option>
+        <option value="120000">Opción 2</option>
     </select>
 
     <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
 </div>
 
-<!-- SERVICIO 3: Instalaciones Eléctricas -->
+<!-- SERVICIO 3 -->
 <div class="servicio">
     <span>Instalaciones Eléctricas</span>
-
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-        <p>
-            <b>Opción 1 - Instalaciones Eléctricas 110V:</b><br>
-            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 110V.<br>
-            <b>$20.000 por puntos</b>
-        </p>
-        <p>
-            <b>Opción 2 - Instalaciones Eléctricas 220V:</b><br>
-            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 220V.<br>
-            <b>$35.000 por puntos</b>
-        </p>
+        <p><b>110V:</b> $20.000</p>
+        <p><b>220V:</b> $35.000</p>
     </div>
 
     <select class="opciones" data-nombre="Instalaciones Eléctricas">
-        <option value="20000">Opción 1 - 110V</option>
-        <option value="35000">Opción 2 - 220V</option>
+        <option value="20000">110V</option>
+        <option value="35000">220V</option>
     </select>
 
     <input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
 </div>
 
-<!-- SERVICIO 4: Reparaciones Menores -->
+<!-- SERVICIO 4 -->
 <div class="servicio">
     <span>Reparaciones menores - $50.000</span>
-
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
     <div class="descripcion">
-        Reparación de cortos en un punto específico, ajuste de empalmes o cambio de roseta con cableado recalentado.
+        Reparación de cortos...
     </div>
-
     <input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
+</div>
+
+<!-- ✅ SERVICIO 5: OTRO (AGREGADO) -->
+<div class="servicio">
+    <span>Otro servicio</span>
+    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <input type="text" placeholder="Nombre del servicio" class="otro-nombre">
+    <input type="text" placeholder="Valor" class="otro-precio">
+    <input type="checkbox" data-nombre="Otro servicio" hidden>
 </div>
 
 <!-- FACTURA -->
@@ -260,10 +243,10 @@ select.opciones {
 
     <button onclick="descargarPDF()">Descargar PDF</button>
 </div>
-```
+
+<button onclick="generarFactura()">Generar factura</button>
 
 </div>
-
 
 <script>
 
@@ -283,6 +266,7 @@ function formato(num) {
     return num.toLocaleString('es-CO');
 }
 
+/* ✅ FUNCIÓN MODIFICADA */
 function generarFactura() {
     let nombreCliente = document.getElementById("nombreCliente").value;
     let cedula = document.getElementById("cedulaCliente").value;
@@ -290,6 +274,7 @@ function generarFactura() {
     let checks = document.querySelectorAll('input[type="checkbox"]');
     let lista = document.getElementById("lista");
     let total = 0;
+    let mensaje = "🧾 *Factura FB Servicios Eléctricos*%0A";
 
     lista.innerHTML = "";
 
@@ -306,11 +291,21 @@ function generarFactura() {
                 precio = parseInt(select.value);
             }
 
+            let otroNombre = servicio.querySelector(".otro-nombre");
+            let otroPrecio = servicio.querySelector(".otro-precio");
+
+            if (otroNombre && otroPrecio && otroNombre.value && otroPrecio.value) {
+                nombre = otroNombre.value;
+                precio = parseInt(otroPrecio.value);
+            }
+
             total += precio;
 
             let li = document.createElement("li");
             li.innerHTML = `<span>${nombre}</span><span>$${formato(precio)}</span>`;
             lista.appendChild(li);
+
+            mensaje += `• ${nombre}: $${formato(precio)}%0A`;
         }
     });
 
@@ -318,6 +313,10 @@ function generarFactura() {
     document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
     document.getElementById("total").innerText = formato(total);
     document.getElementById("factura").style.display = "block";
+
+    mensaje += `%0A💰 *Total:* $${formato(total)}`;
+
+    window.open(`https://wa.me/?text=${mensaje}`, '_blank');
 }
 
 function descargarPDF() {
