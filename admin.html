@@ -107,8 +107,8 @@ button {
 
     <ul id="lista"></ul>
 
-    <div class="total">
-        Total: $<span id="total">0</span>
+    <div class="total" id="totalTexto">
+        Total: $0
     </div>
 
     <button onclick="descargarPDF()">Descargar PDF</button>
@@ -118,6 +118,8 @@ button {
 </div>
 
 <script>
+
+let totalGlobal = 0;
 
 function formato(num){
     return num.toLocaleString('es-CO');
@@ -177,15 +179,18 @@ function generarFactura(){
         total = totalDetectado;
     }
 
+    totalGlobal = total;
+
     document.getElementById("clienteNombre").innerText = "Cliente: " + nombre;
     document.getElementById("clienteCedula").innerText = "Cédula: " + cedula;
-    document.getElementById("total").innerText = formato(total);
+
+    // 🔥 ESCRIBIR TOTAL COMO TEXTO PLANO (CLAVE)
+    document.getElementById("totalTexto").innerHTML = "Total: $" + formato(total);
 
     document.getElementById("factura").style.display = "block";
 }
 
 
-// 🔥 ARREGLO DEL PDF (CON DELAY)
 function descargarPDF() {
 
     let factura = document.getElementById("factura");
@@ -200,7 +205,7 @@ function descargarPDF() {
 
     setTimeout(() => {
         html2pdf().set(opciones).from(factura).save();
-    }, 600); // 🔥 delay para asegurar que salga el total
+    }, 700);
 }
 
 </script>
