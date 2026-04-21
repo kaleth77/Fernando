@@ -157,67 +157,9 @@ select.opciones {
 <input type="text" id="nombreCliente" placeholder="Nombre del cliente">
 <input type="text" id="cedulaCliente" placeholder="Cédula">
 
-<!-- SERVICIO 1 -->
-<div class="servicio">
-    <span>Visita técnica de valoración - $20.000</span>
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-    <div class="descripcion">
-        Servicio en sitio para identificar la falla eléctrica...
-    </div>
-    <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
-</div>
+<!-- SERVICIOS (igual que los tuyos) -->
 
-<!-- SERVICIO 2 -->
-<div class="servicio">
-    <span>Mantenimiento en aires acondicionado</span>
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-        <p><b>Opción 1:</b> $80.000</p>
-        <p><b>Opción 2:</b> $120.000</p>
-    </div>
-
-    <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1</option>
-        <option value="120000">Opción 2</option>
-    </select>
-
-    <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
-</div>
-
-<!-- SERVICIO 3 -->
-<div class="servicio">
-    <span>Instalaciones Eléctricas</span>
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-        <p><b>110V:</b> $20.000</p>
-        <p><b>220V:</b> $35.000</p>
-    </div>
-
-    <select class="opciones" data-nombre="Instalaciones Eléctricas">
-        <option value="20000">110V</option>
-        <option value="35000">220V</option>
-    </select>
-
-    <input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
-</div>
-
-<!-- SERVICIO 4 -->
-<div class="servicio">
-    <span>Reparaciones menores - $50.000</span>
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-    <div class="descripcion">
-        Reparación de cortos...
-    </div>
-    <input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
-</div>
-
-<!-- ✅ SERVICIO 5: OTRO (AGREGADO) -->
+<!-- ✅ OTRO -->
 <div class="servicio">
     <span>Otro servicio</span>
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
@@ -266,7 +208,7 @@ function formato(num) {
     return num.toLocaleString('es-CO');
 }
 
-/* ✅ FUNCIÓN MODIFICADA */
+/* 🔥 FUNCIÓN FINAL CON PDF + WHATSAPP */
 function generarFactura() {
     let nombreCliente = document.getElementById("nombreCliente").value;
     let cedula = document.getElementById("cedulaCliente").value;
@@ -316,29 +258,22 @@ function generarFactura() {
 
     mensaje += `%0A💰 *Total:* $${formato(total)}`;
 
-    window.open(`https://wa.me/573023507438?text=${mensaje}`, '_blank');
+    // 🔥 GENERAR PDF Y ENVIAR LINK
+    html2pdf().from(document.getElementById("factura")).outputPdf('blob').then(function(pdf){
+
+        let url = URL.createObjectURL(pdf);
+
+        let mensajeFinal = mensaje + `%0A📄 Descargar factura:%0A${encodeURIComponent(url)}`;
+
+        window.open(`https://wa.me/573023507438?text=${mensajeFinal}`, '_blank');
+
+    });
 }
 
 function descargarPDF() {
     let factura = document.getElementById("factura");
 
-    let opciones = {
-        margin: 0.3,
-        filename: "factura.pdf",
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 3, useCORS: true, scrollY: 0 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-    };
-
-    html2pdf().set(opciones).from(factura).outputPdf('blob').then(function (pdf) {
-        let url = URL.createObjectURL(pdf);
-        window.open(url, '_blank');
-
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = "factura.pdf";
-        a.click();
-    });
+    html2pdf().from(factura).save("factura.pdf");
 }
 
 </script>
