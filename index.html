@@ -181,21 +181,21 @@ select.opciones {
 
     <div class="descripcion">
         <p>
-            <b>Opción 1 - Mantenimiento preventivo:</b><br>
-            Deja tu aire como nuevo. Eliminamos polvo, moho y malos olores, verificamos gas y amperaje.<br>
+            <b>Opción 1 - Mantenimiento:</b><br>
+            Limpieza y lavado aire acondicionado.<br>
             <b>$80.000</b>
         </p>
         <p>
-            <b>Opción 2 - Mantenimiento profundo:</b><br>
-            Limpieza profunda de filtros, serpentines y turbina, revisión de gas refrigerante, drenaje y conexiones eléctricas. Mejora el rendimiento, reduce consumo y alarga la vida útil del equipo.<br>
-            <b>$120.000</b><br>
-            <i>Recomendado cada 4 o 6 meses.</i>
+            <b>Opción 2 - Mantenimiento Preventivo:</b><br>
+            Daños electricos, medicion de gases etc.<br>
+            <b>$100.000</b><br>
+            
         </p>
     </div>
 
     <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
-        <option value="80000">Opción 1 - Preventivo</option>
-        <option value="120000">Opción 2 - Profundo</option>
+        <option value="80000">Opción 1 - Mantenimiento</option>
+        <option value="120000">Opción 2 - Preventivo</option>
     </select>
 
     <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
@@ -212,12 +212,12 @@ select.opciones {
         <p>
             <b>Opción 1 - Instalaciones Eléctricas 110V:</b><br>
             Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 110V.<br>
-            <b>$20.000</b>
+            <b>$20.000 por puntos</b>
         </p>
         <p>
             <b>Opción 2 - Instalaciones Eléctricas 220V:</b><br>
             Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 220V.<br>
-            <b>$35.000</b>
+            <b>$35.000 por puntos</b>
         </p>
     </div>
 
@@ -231,40 +231,17 @@ select.opciones {
 
 <!-- SERVICIO 4: Reparaciones Menores -->
 <div class="servicio">
-    <span>Reparaciones Menores. Soluciones rápidas sin intervenir circuitos principales.</span>
+    <span>Reparaciones menores - $50.000</span>
 
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-        <p>
-            <b>Opción 1:</b><br>
-            Cambio de tomacorriente, interruptor o plafón dañado.<br>
-            <b>$80.000</b>
-        </p>
-        <p>
-            <b>Opción 2:</b><br>
-            Deja tu aire como nuevo. Eliminamos polvo, moho y malos olores, verificamos gas y amperaje.<br>
-            <b>$80.000</b>
-        </p>
-        <p>
-            <b>Opción 3:</b><br>
-            Reparación de cortos en un punto específico, ajuste de empalmes o cambio de roseta con cableado recalentado.<br>
-            <b>$120.000</b><br>
-            <i>Recomendado cada 4 o 6 meses.</i>
-        </p>
+        Reparación de cortos en un punto específico, ajuste de empalmes o cambio de roseta con cableado recalentado.
     </div>
 
-    <select class="opciones" data-nombre="Reparaciones Menores">
-        <option value="80000">Opción 1</option>
-        <option value="80000">Opción 2</option>
-        <option value="120000">Opción 3</option>
-    </select>
-
-    <input type="checkbox" data-nombre="Reparaciones Menores" hidden>
+    <input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
 </div>
-
-<button onclick="generarFactura()">Generar Factura</button>
 
 <!-- FACTURA -->
 <div id="factura">
@@ -286,6 +263,7 @@ select.opciones {
 ```
 
 </div>
+
 
 <script>
 
