@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FB Servicios Electricos</title>
+<title>FB Servicios Eléctricos</title>
 
 <style>
 body {
@@ -26,10 +25,11 @@ header {
     margin: auto;
 }
 
-input[type="text"]{
+input[type="text"],
+input[type="number"]{
     width:100%;
     padding:10px;
-    margin:5px 0;
+    margin:8px 0;
     border-radius:5px;
     border:1px solid #ccc;
     box-sizing: border-box;
@@ -42,7 +42,6 @@ input[type="text"]{
     border-radius: 10px;
 }
 
-/* BOTÓN AGREGAR */
 .btn-agregar {
     width: 100%;
     padding: 10px;
@@ -55,38 +54,6 @@ input[type="text"]{
     cursor: pointer;
 }
 
-/* BOTÓN VER MÁS */
-.btn-ver {
-    width: 100%;
-    padding: 8px;
-    background: none;
-    border: none;
-    color: #555;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-/* SCROLL */
-.descripcion {
-    max-height: 0;
-    overflow: hidden;
-    transition: 0.3s;
-    font-size: 13px;
-    color: #555;
-    margin-top: 5px;
-}
-
-.descripcion.activa {
-    max-height: 220px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-.descripcion p {
-    margin: 10px 0;
-}
-
-/* BOTÓN GENERAL */
 button {
     width: 100%;
     padding: 12px;
@@ -107,7 +74,6 @@ select.opciones {
     font-size: 14px;
 }
 </style>
-
 </head>
 <body>
 
@@ -124,36 +90,14 @@ select.opciones {
 <!-- SERVICIO 1 -->
 <div class="servicio">
     <span>Visita técnica de valoración - $20.000</span>
-
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-        Servicio en sitio para identificar la falla eléctrica, realizar mediciones básicas y entregar diagnóstico inicial con cotización del arreglo. Tiene costo independiente.
-    </div>
-
+    <button type="button" class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
 </div>
 
 <!-- SERVICIO 2 -->
 <div class="servicio">
     <span>Mantenimiento en aires acondicionado</span>
-
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-        <p>
-            <b>Opción 1 - Mantenimiento:</b><br>
-            Limpieza y lavado aire acondicionado.<br>
-            <b>$80.000</b>
-        </p>
-        <p>
-            <b>Opción 2 - Mantenimiento Preventivo:</b><br>
-            Daños electricos, medicion de gases etc.<br>
-            <b>$120.000</b>
-        </p>
-    </div>
+    <button type="button" class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
 
     <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
         <option value="80000">Opción 1 - Mantenimiento</option>
@@ -167,26 +111,17 @@ select.opciones {
 <div class="servicio">
     <span>Instalaciones Eléctricas</span>
 
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-        <p>
-            <b>Opción 1 - Instalaciones Eléctricas 110V:</b><br>
-            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 110V.<br>
-            <b>$20.000 por puntos</b>
-        </p>
-        <p>
-            <b>Opción 2 - Instalaciones Eléctricas 220V:</b><br>
-            Cableado e instalación de puntos de tomacorriente, interruptores, iluminación. 220V.<br>
-            <b>$35.000 por puntos</b>
-        </p>
-    </div>
+    <button type="button" class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
 
     <select class="opciones" data-nombre="Instalaciones Eléctricas">
-        <option value="20000">Opción 1 - 110V</option>
-        <option value="35000">Opción 2 - 220V</option>
+        <option value="20000">Opción 1 - 110V ($20.000 por punto)</option>
+        <option value="35000">Opción 2 - 220V ($35.000 por punto)</option>
     </select>
+
+    <input type="number"
+           class="cantidad-puntos"
+           placeholder="Cantidad de puntos"
+           min="1">
 
     <input type="checkbox" data-nombre="Instalaciones Eléctricas" hidden>
 </div>
@@ -194,42 +129,28 @@ select.opciones {
 <!-- SERVICIO 4 -->
 <div class="servicio">
     <span>Reparaciones menores - $50.000</span>
-
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
-    <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
-    <div class="descripcion">
-        Reparación de cortos en un punto específico, ajuste de empalmes o cambio de roseta con cableado recalentado.
-    </div>
-
+    <button type="button" class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <input type="checkbox" value="50000" data-nombre="Reparaciones menores" hidden>
 </div>
 
 <!-- OTRO -->
 <div class="servicio">
     <span>Otro servicio</span>
-    <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
+    <button type="button" class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <input type="text" placeholder="Nombre del servicio" class="otro-nombre">
     <input type="text" placeholder="Valor" class="otro-precio">
     <input type="checkbox" hidden>
 </div>
 
-<button onclick="enviarPedido()">Pedir servicio</button>
+<button type="button" onclick="enviarPedido()">Pedir servicio</button>
 
 </div>
 
 <script>
-
 function toggleCheck(btn) {
     let check = btn.parentElement.querySelector('input[type="checkbox"]');
     check.checked = !check.checked;
     btn.innerText = check.checked ? "Agregado ✔" : "Agregar";
-}
-
-function toggleDesc(btn) {
-    let desc = btn.nextElementSibling;
-    desc.classList.toggle("activa");
-    btn.innerText = desc.classList.contains("activa") ? "Ver menos" : "Ver más";
 }
 
 function formato(num) {
@@ -246,7 +167,8 @@ function enviarPedido() {
     let mensaje = "📩 *Nuevo pedido de servicio*%0A%0A";
     mensaje += "👤 Cliente: " + nombreCliente + "%0A";
     mensaje += "🆔 Cédula: " + cedula + "%0A%0A";
-    mensaje += "🛠 Servicios:%0A";
+    mensaje += "🧾 *Factura*%0A";
+    mensaje += "━━━━━━━━━━%0A";
 
     let total = 0;
 
@@ -255,13 +177,26 @@ function enviarPedido() {
 
             let servicio = c.parentElement;
             let select = servicio.querySelector(".opciones");
+            let puntosInput = servicio.querySelector(".cantidad-puntos");
 
-            let nombre = c.dataset.nombre;
-            let precio = parseInt(c.value);
+            let nombre = c.dataset.nombre || "Servicio";
+            let subtotal = parseInt(c.value) || 0;
 
             if (select) {
-                nombre = select.dataset.nombre;
-                precio = parseInt(select.value);
+                let precio = parseInt(select.value);
+
+                if (puntosInput && puntosInput.value) {
+                    let puntos = parseInt(puntosInput.value);
+                    subtotal = precio * puntos;
+
+                    mensaje += `• ${nombre}%0A`;
+                    mensaje += `   ${puntos} punto(s) x $${formato(precio)} = $${formato(subtotal)}%0A`;
+
+                    total += subtotal;
+                    return;
+                } else {
+                    subtotal = precio;
+                }
             }
 
             let otroNombre = servicio.querySelector(".otro-nombre");
@@ -269,20 +204,20 @@ function enviarPedido() {
 
             if (otroNombre && otroPrecio && otroNombre.value && otroPrecio.value) {
                 nombre = otroNombre.value;
-                precio = parseInt(otroPrecio.value);
+                subtotal = parseInt(otroPrecio.value);
             }
 
-            total += precio;
+            total += subtotal;
 
-            mensaje += `• ${nombre} - $${formato(precio)}%0A`;
+            mensaje += `• ${nombre} - $${formato(subtotal)}%0A`;
         }
     });
 
-    mensaje += `%0A💰 Total estimado: $${formato(total)}`;
+    mensaje += "━━━━━━━━━━%0A";
+    mensaje += `💰 *Total estimado:* $${formato(total)}`;
 
     window.open(`https://wa.me/573023507438?text=${mensaje}`, '_blank');
 }
-
 </script>
 
 </body>
