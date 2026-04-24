@@ -121,32 +121,27 @@ select.opciones {
     <span>Visita técnica de valoración - $20.000</span>
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
     <div class="descripcion">
         Servicio en sitio para identificar la falla eléctrica y entregar diagnóstico inicial.
     </div>
-
     <input type="checkbox" value="20000" data-nombre="Visita técnica de valoración" hidden>
 </div>
 
 <!-- SERVICIO 2 -->
 <div class="servicio">
     <span>Mantenimiento en aires acondicionado</span>
-
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
-
     <div class="descripcion">
         <p><b>Opción 1:</b> Limpieza y lavado - <b>$80.000</b></p>
         <p><b>Opción 2:</b> Preventivo - <b>$120.000</b></p>
         <p><b>Opción 3:</b> Desmontar Aire - <b>$80.000</b></p>
-        
     </div>
 
     <select class="opciones" data-nombre="Mantenimiento en aires acondicionado">
         <option value="80000">Opción 1 - Mantenimiento</option>
         <option value="120000">Opción 2 - Preventivo</option>
-         <option value="80000">Opción 3 - Desmontar Aire</option>
+        <option value="80000">Opción 3 - Desmontar Aire</option>
     </select>
 
     <input type="checkbox" data-nombre="Mantenimiento en aires acondicionado" hidden>
@@ -155,19 +150,12 @@ select.opciones {
 <!-- SERVICIO 3 -->
 <div class="servicio">
     <span>Instalaciones Eléctricas</span>
-
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
     <div class="descripcion">
-        <p>
-            <b>Opción 1 - 110V:</b><br>
-            <b>$20.000 por punto</b>
-        </p>
-        <p>
-            <b>Opción 2 - 220V:</b><br>
-            <b>$35.000 por punto</b>
-        </p>
+        <p><b>Opción 1 - 110V:</b><br><b>$20.000 por punto</b></p>
+        <p><b>Opción 2 - 220V:</b><br><b>$35.000 por punto</b></p>
     </div>
 
     <select class="opciones" data-nombre="Instalaciones Eléctricas">
@@ -186,7 +174,6 @@ select.opciones {
 <!-- SERVICIO 4 -->
 <div class="servicio">
     <span>Reparaciones menores - $50.000</span>
-
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <button class="btn-ver" onclick="toggleDesc(this)">Ver más</button>
 
@@ -202,8 +189,8 @@ select.opciones {
     <span>Otro servicio</span>
     <button class="btn-agregar" onclick="toggleCheck(this)">Agregar</button>
     <input type="text" placeholder="Nombre del servicio" class="otro-nombre">
-    <input type="text" placeholder="Valor" class="otro-precio">
-    <input type="checkbox" hidden>
+    <input type="text" placeholder="Descripción de lo que necesita" class="otro-descripcion">
+    <input type="checkbox" data-nombre="Otro servicio" hidden>
 </div>
 
 <button onclick="enviarPedido()">Pedir servicio</button>
@@ -235,7 +222,7 @@ function enviarPedido() {
     let mensaje = "📩 *Nuevo pedido de servicio*%0A%0A";
     mensaje += "👤 Cliente: " + nombreCliente + "%0A";
     mensaje += "🆔 Cédula: " + cedula + "%0A%0A";
-    mensaje += "🧾 *Factura*%0A";
+    mensaje += "🧾 *Solicitud de servicio*%0A";
     mensaje += "━━━━━━━━━━%0A";
 
     let total = 0;
@@ -245,6 +232,18 @@ function enviarPedido() {
             let servicio = c.parentElement;
             let select = servicio.querySelector(".opciones");
             let puntosInput = servicio.querySelector(".cantidad-puntos");
+
+            let otroNombre = servicio.querySelector(".otro-nombre");
+            let otroDescripcion = servicio.querySelector(".otro-descripcion");
+
+            // OTRO SERVICIO
+            if (otroNombre && otroDescripcion && otroNombre.value) {
+                mensaje += `• Otro servicio%0A`;
+                mensaje += `   📝 ${otroNombre.value}%0A`;
+                mensaje += `   📄 ${otroDescripcion.value}%0A`;
+                mensaje += `   💰 Precio a colocar: ______%0A`;
+                return;
+            }
 
             let nombre = c.dataset.nombre || "Servicio";
             let subtotal = parseInt(c.value) || 0;
@@ -266,14 +265,6 @@ function enviarPedido() {
                 }
             }
 
-            let otroNombre = servicio.querySelector(".otro-nombre");
-            let otroPrecio = servicio.querySelector(".otro-precio");
-
-            if (otroNombre && otroPrecio && otroNombre.value && otroPrecio.value) {
-                nombre = otroNombre.value;
-                subtotal = parseInt(otroPrecio.value);
-            }
-
             total += subtotal;
             mensaje += `• ${nombre} - $${formato(subtotal)}%0A`;
         }
@@ -282,7 +273,7 @@ function enviarPedido() {
     mensaje += "━━━━━━━━━━%0A";
     mensaje += `💰 *Total estimado:* $${formato(total)}`;
 
-    window.open(`https://wa.me/573023507438?text=${mensaje}`, '_blank');
+    window.open(`https://wa.me/573117154704?text=${mensaje}`, '_blank');
 }
 </script>
 
