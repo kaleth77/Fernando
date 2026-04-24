@@ -128,9 +128,13 @@ function detectarOtroServicio() {
 }
 
 function extraerNumero(texto) {
-    const match = texto.match(/\$([\d\.,]+)/);
-    if (!match) return 0;
-    return parseInt(match[1].replace(/\./g, "").replace(/,/g, ""));
+    const numeros = texto.match(/\$([\d\.,]+)/g);
+    if (!numeros) return 0;
+
+    const ultimo = numeros[numeros.length - 1];
+    return parseInt(
+        ultimo.replace("$", "").replace(/\./g, "").replace(/,/g, "")
+    );
 }
 
 function formatoMoneda(num) {
@@ -147,7 +151,6 @@ function generarFacturaImagen() {
     let nombre = "", cedula = "";
     let servicios = [];
     let total = 0;
-    let tieneOtro = false;
 
     lineas.forEach(l => {
         let linea = l.trim();
@@ -160,14 +163,30 @@ function generarFacturaImagen() {
             cedula = linea.split(":")[1]?.trim() || "";
         }
 
+        // OTRO SERVICIO
         if (linea.toLowerCase().includes("otro servicio")) {
-            tieneOtro = true;
             servicios.push("Otro servicio - $" + formatoMoneda(precioOtro));
             total += precioOtro;
         }
 
-        else if (linea.includes("$") && !linea.toLowerCase().includes("total")) {
-            servicios.push(linea.replace("•", "").trim());
+        // SOLO LÍNEAS PRINCIPALES
+        else if (
+            linea.startsWith("•") &&
+            linea.includes("$") &&
+            !linea.toLowerCase().includes("total")
+        ) {
+            const limpio = linea.replace("•", "").trim();
+            servicios.push(limpio);
+            total += extraerNumero(limpio);
+        }
+
+        // LÍNEAS DE PUNTOS / SUBTOTAL
+        else if (
+            !linea.startsWith("•") &&
+            linea.includes("=") &&
+            linea.includes("$")
+        ) {
+            servicios.push(linea);
             total += extraerNumero(linea);
         }
     });
